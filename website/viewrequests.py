@@ -32,6 +32,13 @@ sqlalchemysetup.setup()
 loginhelper.processCookie()
 
 [success,requests] = gridclienthelper.getproxy().getmatchrequestqueuev1()
+leagues = sqlalchemysetup.session.query(League)
+valid = []
+for league in leagues:
+   matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
+   matchids = [match.match_id for match in matches]
+   valid.extend([i for i in requests if i['matchrequest_id'] in matchids])
+requests = valid
 
 jinjahelper.rendertemplate('viewrequests.html', requests = requests )
 

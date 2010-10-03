@@ -43,14 +43,23 @@ Pick a league: <form method="post" action="viewleagueresults.py">{{formhelper.li
     <td class='tablehead'>Wins:</td>
     <td class='tablehead'>Losses:</td>
     <td class='tablehead'>Draws:</td>
+    <td class='tablehead'>Timeouts:</td>
     <td class='tablehead'>Crashes:</td>
     <td class='tablehead'>Scores:</td>
+    <td class='tablehead'>Games:</td>
 </tr>
-    {% for index in range(numais) %}
+    {% for aistat in aistats %}
     <tr>
-        <td class='tablehead'>{{indextoai[index].ai_name}} {{indextoai[index].ai_version}}</td>
+        <td class='tablehead'>{{aistat.name}} {{aistat.version}}</td>
+        <td>{{aistat.wins}}</td>
+        <td>{{aistat.losses}}</td>
+        <td>{{aistat.draws}}</td>
+        <td>{{aistat.timeouts}}</td>
+        <td>{{aistat.crashes}}</td>
+        <td>{{aistat.scores}}</td>
+        <td>{{aistat.games}}</td>
     </tr>
-   {% endfor %}
+    {% endfor %}
 </table>
 
 

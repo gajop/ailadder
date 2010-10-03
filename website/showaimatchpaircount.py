@@ -55,9 +55,13 @@ def go():
 
    ais = leaguehelper.getleagueais( league )
 
+   matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
+   matchids = [match.match_id for match in matches]
    [success, matchrequestqueue] = gridclienthelper.getproxy().getmatchrequestqueuev1()
    [success, matchresults] = gridclienthelper.getproxy().getmatchresultsv1()
    [success, mapok ] = gridclienthelper.getproxy().mapexists( league.map_name )
+   matchrequestqueue = [i for i in matchrequestqueue if i['matchrequest_id'] in matchids]
+   matchresults = [i for i in matchresults if i['matchrequest_id'] in matchids]
    #if not mapok:
    #   jinjahelper.message("League " + leaguename + " uses a currently unavailable map: " + league.map_name)
    #   return
