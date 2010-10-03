@@ -50,7 +50,10 @@ def schedulematchesforleague( league, matchrequestqueue, matchresults ):
             aiqueuedpairmatchcount[inneraiindex][outeraiindex] = league.nummatchesperaipair - aifinishedpairmatchcount[outeraiindex][inneraiindex]
 
 def scheduleleaguematch( league, ai0, ai1 ):
-   matchrequestcontroller_gridclient.addmatchrequest( ai0 = ai0, ai1 = ai1, map_name = league.map_name, mod_name = league.mod_name, league = league )
+   matchrequest_id = matchrequestcontroller_gridclient.addmatchrequest( ai0 = ai0, ai1 = ai1, map_name = league.map_name, mod_name = league.mod_name, league = league )
+   leagueMatch = LeagueMatch(matchrequest_id, league.league_id)
+   sqlalchemysetup.session.add(leagueMatch)
+   sqlalchemysetup.session.commit()
 
 # returns [ dict from ai to zero-based aiindex, dict from index to ai ]
 # only returns ais that match the league, ie have at least the same options as league

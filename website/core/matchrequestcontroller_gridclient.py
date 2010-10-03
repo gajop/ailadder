@@ -36,10 +36,12 @@ import gridclienthelper
 # returns the new match request, so can add options and so on
 # doesn't commit
 def addmatchrequest( ai0, ai1, mod_name, map_name, league = None ):
-   [result, message] = gridclienthelper.getproxy().schedulematchv1(map_name,mod_name,[{'ai_name': ai0.ai_name,'ai_version': ai0.ai_version},{'ai_name': ai1.ai_name, 'ai_version': ai1.ai_version } ],[])
+   [result, message] = gridclienthelper.getproxy().schedulematchv1(map_name,mod_name,[{'ai_name': ai0.ai_name,'ai_version': ai0.ai_version},{'ai_name': ai1.ai_name, 'ai_version': ai1.ai_version } ],[], 10)
    if not result:
       print "error: " + message
       raise Exception(message)
+   else:
+       return message #message represents matchrequest_id
 
 
 

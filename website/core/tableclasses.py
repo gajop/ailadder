@@ -108,7 +108,7 @@ class AI(Base):
    ai_downloadurl = Column(String(255))
    ai_owneraccount_id = Column(Integer,ForeignKey('accounts.account_id'))
 
-   __table_args__ = (schema.UniqueConstraint('ai_name','ai_version'), {} )
+#   __table_args__ = (schema.UniqueConstraint('ai_name','ai_version'), {} )
 
    allowedmaps = relation("AIAllowedMap")
    allowedmods = relation("AIAllowedMod")
@@ -148,6 +148,15 @@ leagueoptions = Table( 'leagueoptions', Base.metadata,
    Column('option_id', Integer,ForeignKey('aioptions.option_id'),nullable = False),
    UniqueConstraint('league_id', 'option_id')
 )
+
+class LeagueMatch(Base):
+    __tablename__ = 'league_matches'
+    match_id = Column(Integer,primary_key=True)
+    league_id = Column(Integer,ForeignKey('leagues.league_id'), nullable = False)
+
+    def __init__(self, match_id, league_id):
+        self.match_id = match_id
+        self.league_id = league_id
 
 class League(Base):
    __tablename__ = 'leagues'
