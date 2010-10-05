@@ -1,26 +1,28 @@
 {% extends 'menu.html' %}
 
+{% import 'formhelper.html' as formhelper %}
 {% block title %}AILadder - Match requests{% endblock title %}
 {% block content %}
+
+Pick a league: <form method="post" action="viewrequests.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
+<input type="submit" value="Reload" />
+</form>
+
 <table padding='3'>
 <tr class='tablehead'>
-<td>matchrequestid</td>
-<td>ai0name</td>
-<td>ai0version</td>
-<td>ai1name</td>
-<td>ai1version</td>
-<td>mapname</td>
-<td>modname</td>
-<td>options</td>
+<td>ID</td>
+<td>AI0</td>
+<td>AI1</td>
+<td>Map</td>
+<td>Mod</td>
+<td>Options</td>
 </tr>
 
 {% for request in requests %}
    <tr>
    <td>{{request.matchrequest_id}}</td>
-   <td>{{request['ais'][0].ai_name|e}}</td>
-   <td>{{request['ais'][0].ai_version|e}}</td>
-   <td>{{request['ais'][1].ai_name|e}}</td>
-   <td>{{request['ais'][1].ai_version|e}}</td>
+   <td>{{request['ais'][0].ai_name|e}} {{request['ais'][0].ai_version|e}}</td>
+   <td>{{request['ais'][1].ai_name|e}} {{request['ais'][1].ai_version|e}}</td>
    <td>{{request.map_name|e}}</td>
    <td>{{request.mod_name|e}}</td>
    <td>

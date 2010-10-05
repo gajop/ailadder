@@ -25,14 +25,13 @@ def getmenus():
       menus.append(["Login", [
          [ 'Login', 'loginform.py' ]
       ]])
-   menus.append(['League', [
+   menus.append(['League Results', [
       ['View league group results', 'viewleaguegroupresults.py'],
       ['View league results', 'viewleagueresults.py'],
       ['View match results', 'viewresults.py']
    ]])
-   menus.append([ 'Runner', [
+   menus.append([ 'League Requests', [
       ['View request queue', 'viewrequests.py'],
-      ['Add request to queue', 'submitrequestform.py'],
       ['View request counts per league', 'showaimatchpaircount.py']
    ]])
 

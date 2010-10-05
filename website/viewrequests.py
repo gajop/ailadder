@@ -31,16 +31,25 @@ sqlalchemysetup.setup()
 
 loginhelper.processCookie()
 
-[success,requests] = gridclienthelper.getproxy().getmatchrequestqueuev1()
-leagues = sqlalchemysetup.session.query(League)
-valid = []
-for league in leagues:
+def go():
+   leaguenames = listhelper.tuplelisttolist( sqlalchemysetup.session.query( League.league_name ) )
+   if len(leaguenames) == 0:
+      jinjahelper.message("Please create a league first.")
+      return
+
+   leaguename = formhelper.getValue('leaguename')
+   if leaguename == None:
+      leaguename = leaguenames[0]
+
+   league = leaguehelper.getLeague(leaguename)
    matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
    matchids = [match.match_id for match in matches]
-   valid.extend([i for i in requests if i['matchrequest_id'] in matchids])
-requests = valid
 
-jinjahelper.rendertemplate('viewrequests.html', requests = requests )
+   [success,requests] = gridclienthelper.getproxy().getmatchrequestqueuev1()
+   requests = [i for i in requests if i['matchrequest_id'] in matchids]
 
+   jinjahelper.rendertemplate('viewrequests.html', requests = requests, leaguenames = leaguenames, league = league )
+
+go()
 sqlalchemysetup.close()
 

@@ -6,8 +6,6 @@ Leage results
 {% endblock title %}
 {% block content %}
 
-<p>This page is mainly for debugging, at least for now.</p>
-
 Pick a league: <form method="post" action="viewleagueresults.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
 <input type="submit" value="Reload" />
 </form>
@@ -45,8 +43,8 @@ Pick a league: <form method="post" action="viewleagueresults.py">{{formhelper.li
     <td class='tablehead'>Draws:</td>
     <td class='tablehead'>Timeouts:</td>
     <td class='tablehead'>Crashes:</td>
-    <td class='tablehead'>Scores:</td>
-    <td class='tablehead'>Games:</td>
+    <td class='tablehead'>Total Games:</td>
+    <td class='tablehead'>Score:</td>
 </tr>
     {% for aistat in aistats %}
     <tr>
@@ -56,27 +54,10 @@ Pick a league: <form method="post" action="viewleagueresults.py">{{formhelper.li
         <td>{{aistat.draws}}</td>
         <td>{{aistat.timeouts}}</td>
         <td>{{aistat.crashes}}</td>
-        <td>{{aistat.scores}}</td>
         <td>{{aistat.games}}</td>
+        <td>{{aistat.scores}}</td>
     </tr>
     {% endfor %}
-</table>
-
-
-<h2>AI pair (scheduled + completed) match count</h2>
-
-<table cellpadding="3">
-<tr><td class='tablehead'>(matches finished + queued) / matches required for league</td>
-   {% for inneraiindex in range(numais) %}
-      <td class='tablehead'>{{indextoai[inneraiindex].ai_name}} {{indextoai[inneraiindex].ai_version}}</td>
-   {% endfor %}
-{% for outeraiindex in range(numais) %}
-   <tr><td class='tablehead'>{{indextoai[outeraiindex].ai_name}} {{indextoai[outeraiindex].ai_version}}</td>
-   {% for inneraiindex in range(numais) %}
-      <td {% if aipairfinishedcount[outeraiindex][inneraiindex] + aipairqueuedmatchcount[outeraiindex][inneraiindex] >= nummatchesperaipair  %}class='success'{% endif %}>{{aipairfinishedcount[outeraiindex][inneraiindex] + aipairqueuedmatchcount[outeraiindex][inneraiindex]}} / {{nummatchesperaipair}}</td>
-   {% endfor %}
-   </tr>
-{% endfor %}
 </table>
 
 {% if showform and mapok and modok %}

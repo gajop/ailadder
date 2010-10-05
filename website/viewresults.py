@@ -34,12 +34,29 @@ sqlalchemysetup.setup()
 
 loginhelper.processCookie()
 
-[success,results] = gridclienthelper.getproxy().getmatchresultsv1()
+def go():
+   leaguenames = listhelper.tuplelisttolist( sqlalchemysetup.session.query( League.league_name ) )
+   if len(leaguenames) == 0:
+      jinjahelper.message("Please create a league first.")
+      return
 
-if success:
-   jinjahelper.rendertemplate( 'viewresults.html', results = results, springgridurl = confighelper.getValue('springgridwebsite' ) )
-else:
-   jinjahelper.message( results )
+   leaguename = formhelper.getValue('leaguename')
+   if leaguename == None:
+      leaguename = leaguenames[0]
+
+   league = leaguehelper.getLeague(leaguename)
+   matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
+   matchids = [match.match_id for match in matches]
+
+   [success,results] = gridclienthelper.getproxy().getmatchresultsv1()
+   results = [i for i in results if i['matchrequest_id'] in matchids]
+
+   if success:
+      jinjahelper.rendertemplate( 'viewresults.html', results = results, leaguenames = leaguenames, league = league, springgridurl = confighelper.getValue('springgridwebsite' ) )
+   else:
+      jinjahelper.message( results )
+
+go()
 
 sqlalchemysetup.close()
 
