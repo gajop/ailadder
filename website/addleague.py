@@ -45,7 +45,7 @@ else:
       league = League( leaguename, account, modname, mapname, nummatchesperairpair )
       sqlalchemysetup.session.add( league )
       sqlalchemysetup.session.commit()
-      jinjahelper.message( "Added ok" )
+      jinjahelper.message("Added ok. You might want to schedule matches now")
    else:
       jinjahelper.message( "Please fill in the fields and try again" )
 

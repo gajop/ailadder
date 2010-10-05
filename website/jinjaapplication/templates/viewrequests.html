@@ -4,7 +4,7 @@
 {% block title %}AILadder - Match requests{% endblock title %}
 {% block content %}
 
-Pick a league: <form method="post" action="viewrequests.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
+Pick a league: <form method="get" action="viewrequests.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
 <input type="submit" value="Reload" />
 </form>
 

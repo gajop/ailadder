@@ -32,7 +32,8 @@ def getmenus():
    ]])
    menus.append([ 'League Requests', [
       ['View request queue', 'viewrequests.py'],
-      ['View request counts per league', 'showaimatchpaircount.py']
+      ['View request counts per league', 'showaimatchpaircount.py'],
+      ['Schedule matches for league', 'schedulematchesform.py']
    ]])
 
    menus.append([ 'Configuration', [
