@@ -35,29 +35,21 @@ sqlalchemysetup.setup()
 
 loginhelper.processCookie()
 
-def go():
-   leaguename = formhelper.getValue('leaguename')
-   if leaguename == None:
-      league = sqlalchemysetup.session.query(League).first()
-      if league is None:
-          jinjahelper.message('No leagues available.')
-          return
-      leaguename = league.league_name
-   else:
-      league = leaguehelper.getLeague(leaguename)
+leaguename = formhelper.getValue('leaguename')
+if leaguename == None:
+   league = sqlalchemysetup.session.query(League).first()
+   leaguename = league.league_name
+else:
+   league = leaguehelper.getLeague(leaguename)
 
-   ais = aihelper.getAIs()
-   [aitoindex,indextoai] = matchscheduler.getaiindexes(ais)
-   aipairmatchcount = matchscheduler.getaipairmatchcount( sqlalchemysetup.session.query( MatchRequest ),league, ais, aitoindex )
-   leaguenames = listhelper.tuplelisttolist( sqlalchemysetup.session.query( League.league_name ) )
-   aipairfinishedcount = matchscheduler.getaipairmatchcount( sqlalchemysetup.session.query( MatchRequest ).filter( MatchRequest.matchresult != None),league, ais, aitoindex )
-   leaguenames = listhelper.tuplelisttolist( sqlalchemysetup.session.query( League.league_name ) )
+ais = aihelper.getAIs()
+[aitoindex,indextoai] = matchscheduler.getaiindexes(ais)
+aipairmatchcount = matchscheduler.getaipairmatchcount( sqlalchemysetup.session.query( MatchRequest ),league, ais, aitoindex )
+leaguenames = listhelper.tuplelisttolist( sqlalchemysetup.session.query( League.league_name ) )
+aipairfinishedcount = matchscheduler.getaipairmatchcount( sqlalchemysetup.session.query( MatchRequest ).filter( MatchRequest.matchresult != None),league, ais, aitoindex )
+leaguenames = listhelper.tuplelisttolist( sqlalchemysetup.session.query( League.league_name ) )
 
-   jinjahelper.rendertemplate( 'showaimatchpaircount.html', aipairmatchcount = aipairmatchcount, aipairfinishedcount = aipairfinishedcount, aitoindex = aitoindex, indextoai = indextoai, ais = ais, leaguenames = leaguenames, league = league )
+jinjahelper.rendertemplate( 'showaimatchpaircount.html', aipairmatchcount = aipairmatchcount, aipairfinishedcount = aipairfinishedcount, aitoindex = aitoindex, indextoai = indextoai, ais = ais, leaguenames = leaguenames, league = league )
 
-try:
-    go()
-except:
-    jinjahelper.message('Something bad happened.')
 sqlalchemysetup.close()
 
