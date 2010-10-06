@@ -37,8 +37,11 @@ showform = loginhelper.gusername != ''
 
 maps = gridclienthelper.getproxy().getmaps()
 mods = gridclienthelper.getproxy().getmods()
+speeds = [i for i in range(1, 10)]
+speeds.extend([i for i in range(10,101,5)])
+timeouts = speeds 
 
-jinjahelper.rendertemplate('viewleagues.html', leagues = leagues, showform = showform, maps = maps, mods = mods )
+jinjahelper.rendertemplate('viewleagues.html', leagues = leagues, showform = showform, maps = maps, mods = mods, speeds = speeds, timeouts = timeouts )
 
 sqlalchemysetup.close()
 

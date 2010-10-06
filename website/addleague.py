@@ -32,24 +32,37 @@ sqlalchemysetup.setup()
 
 loginhelper.processCookie()
 
-if loginhelper.gusername == '':
-   jinjahelper.message( "You must login first" )
-else:
-   leaguename = formhelper.getValue('leaguename')
-   modname = formhelper.getValue('modname')
-   mapname = formhelper.getValue('mapname')
-   nummatchesperairpair = int(formhelper.getValue('nummatchesperairpair'))
-
-   if leaguename != None and modname != None and mapname != None and leaguename != '' and modname != '' and mapname != '':
-      account = accounthelper.getAccount( loginhelper.gusername )
-      league = League( leaguename, account, modname, mapname, nummatchesperairpair )
-      sqlalchemysetup.session.add( league )
-      sqlalchemysetup.session.commit()
-      jinjahelper.message("Added ok. You might want to schedule matches now")
+def go():
+   if loginhelper.gusername == '':
+      jinjahelper.message( "You must login first" )
    else:
-      jinjahelper.message( "Please fill in the fields and try again" )
+      leaguename = formhelper.getValue('leaguename')
+      modname = formhelper.getValue('modname')
+      mapname = formhelper.getValue('mapname')
+      speed = formhelper.getValue('speed')
+      softtimeout = formhelper.getValue('softtimeout')
+      hardtimeout = formhelper.getValue('hardtimeout')
+      nummatchesperaipair = formhelper.getValue('nummatchesperairpair')
+
+      if leaguename != None and modname != None and mapname != None and speed != None and softtimeout != None and hardtimeout != None and \
+              leaguename != '' and modname != '' and mapname != '':
+         speed = int(speed) 
+         softtimeout = int(softtimeout)
+         hardtimeout = int(hardtimeout)
+         nummatchesperaipair = int(nummatchesperaipair)
+         account = accounthelper.getAccount( loginhelper.gusername )
+         league = League( leaguename, account, modname, mapname, nummatchesperaipair, speed, softtimeout, hardtimeout )
+         sqlalchemysetup.session.add( league )
+         sqlalchemysetup.session.commit()
+         jinjahelper.message("Added ok. You might want to schedule matches <a href=./schedulematchesform.py?league=" + leaguename + ">here</a>")
+      else:
+         jinjahelper.message( "Please fill in the fields and try again" )
+
+try:
+   go()
+except:
+   import sys
+   jinjahelper.message("Something went wrong. " + str(sys.exc_value))
 
 sqlalchemysetup.close()
-
-
 

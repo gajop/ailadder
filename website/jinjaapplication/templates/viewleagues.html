@@ -67,10 +67,15 @@ http://www.opensource.org/licenses/gpl-license.php
    <tr><td>Mod name</td><td>{{formhelper.listtodropdown( 'modname', mods )}}</td></tr>
    <tr><td>Map name</td><td>{{formhelper.listtodropdown( 'mapname', maps )}}</td></tr>
    <tr><td>Num matches per AI pair</td><td>{{formhelper.listtodropdown( 'nummatchesperairpair', range(1,21) )}}</td></tr>
+   <tr><td>Speed</td><td>{{formhelper.listtodropdown('speed', speeds)}}</td></tr>
+   <tr><td>Soft timeout minutes</td><td>{{formhelper.listtodropdown('softtimeout', timeouts)}}</td></tr>
+   <tr><td>Hard timeout minutes</td><td>{{formhelper.listtodropdown('hardtimeout', timeouts)}}</td></tr>
+
 
    <tr><td></td><td><input type='submit' value='Add' /></td></tr>
    </table>
    </form>
+   <p>Note: Soft timeout specifies the amount of ingame time the match should last. It will wait until the game frame equivalent of specified minutes is reached. Hard timeout will stop the game after a certain amount of time has reached in the real world - it's used as a hard limit for cases when game instances are slown down, most often due to AIs.</p>
 {% endif %}
 
 

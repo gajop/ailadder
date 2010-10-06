@@ -26,7 +26,7 @@ import sqlalchemysetup
 from tableclasses import *
 
 defaults = {
-   'springgridwebsite': "http://manageddreams.com/springgridstaging"
+   'springgridwebsite': "http://localhost/public/springgrid"
 } 
 
 def getKeys():

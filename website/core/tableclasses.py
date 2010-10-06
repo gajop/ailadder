@@ -167,16 +167,22 @@ class League(Base):
    map_name = Column(String(255), nullable = False)
    mod_name = Column(String(255), nullable = False)
    nummatchesperaipair = Column(Integer, nullable = False)
+   speed = Column(Integer, nullable = False)
+   softtimeout = Column(Integer, nullable = False)
+   hardtimeout = Column(Integer, nullable = False)
 
    creator = relation("Account")
    options = relation("AIOption", secondary = leagueoptions )
 
-   def __init__( self, league_name, creator, mod_name, map_name, nummatchesperaipair ):
+   def __init__( self, league_name, creator, mod_name, map_name, nummatchesperaipair, speed, softtimeout, hardtimeout ):
       self.league_name = league_name
       self.creator = creator
       self.mod_name = mod_name
       self.map_name = map_name
       self.nummatchesperaipair = nummatchesperaipair
+      self.speed = speed
+      self.softtimeout = softtimeout
+      self.hardtimeout = hardtimeout
 
 # members who are leaguegruops
 leaguegroup_leaguemembers = Table( 'leaguegroup_leaguemembers', Base.metadata,
