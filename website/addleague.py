@@ -54,7 +54,7 @@ def go():
          league = League( leaguename, account, modname, mapname, nummatchesperaipair, speed, softtimeout, hardtimeout )
          sqlalchemysetup.session.add( league )
          sqlalchemysetup.session.commit()
-         jinjahelper.message("Added ok. You might want to schedule matches <a href=./schedulematchesform.py?league=" + leaguename + ">here</a>")
+         jinjahelper.message("Added ok. You might want to schedule matches <a href=./schedulematchesform.py?leaguename=" + leaguename + ">here</a>")
       else:
          jinjahelper.message( "Please fill in the fields and try again" )
 
