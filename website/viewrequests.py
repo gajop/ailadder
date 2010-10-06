@@ -45,8 +45,8 @@ def go():
    matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
    matchids = [match.match_id for match in matches]
 
-   [success,requests] = gridclienthelper.getproxy().getmatchrequestqueuev1()
-   requests = [i for i in requests if i['matchrequest_id'] in matchids]
+   [success, requests] = gridclienthelper.getproxy().getmatchesv1(matchids) #only ids that exist
+   requests = filter(lambda x: x['matchresult'][0] == False, requests)
 
    jinjahelper.rendertemplate('viewrequests.html', requests = requests, leaguenames = leaguenames, league = league )
 

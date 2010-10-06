@@ -48,8 +48,13 @@ def go():
    matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
    matchids = [match.match_id for match in matches]
 
-   [success,results] = gridclienthelper.getproxy().getmatchresultsv1()
-   results = [i for i in results if i['matchrequest_id'] in matchids]
+   [success, results] = gridclienthelper.getproxy().getmatchesv1(matchids) #only ids that exist
+   results = filter(lambda x: x['matchresult'][0] == True, results)
+   for x in results:
+      x['matchresult'] = x['matchresult'][1]
+      x['botrunner_name'] = x['botrunner_name'][1]
+   #[success,results] = gridclienthelper.getproxy().getmatchresultsv1()
+   #results = [i for i in results if i['matchrequest_id'] in matchids]
 
    if success:
       jinjahelper.rendertemplate( 'viewresults.html', results = results, leaguenames = leaguenames, league = league, springgridurl = confighelper.getValue('springgridwebsite' ) )
