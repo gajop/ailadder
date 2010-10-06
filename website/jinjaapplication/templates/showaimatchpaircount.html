@@ -1,0 +1,60 @@
+{% extends 'menu.html' %}
+
+{% import 'formhelper.html' as formhelper %}
+{% block title %}
+Request counts per league
+{% endblock title %}
+{% block content %}
+
+<p>This page is mainly for debugging, at least for now.</p>
+
+Pick a league: <form method="post" action="showaimatchpaircount.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
+<input type="submit" value="Reload" />
+</form>
+
+<h2>Attributes of league '{{league.league_name}}'</h2>
+
+<table cellpadding="3">
+<tr><td class='tablehead'>Map</td><td {% if not mapok %}class="fail"{% endif %}>{{league.map_name}}</td></tr>
+<tr><td class='tablehead'>Mod</td><td {% if not modok %}class="fail"{% endif %}>{{league.mod_name}}</td></tr>
+<tr><td class='tablehead'>Options</td><td>
+{% for option in league.options %}
+{{option}} 
+{% endfor %}
+&nbsp;</td></tr>
+</table>
+
+<h2>AI pair completed match count</h2>
+
+<table cellpadding="3">
+<tr><td class='tablehead'>matches finished / matches required for league</td>
+   {% for inneraiindex in range(numais) %}
+      <td class='tablehead'>{{indextoai[inneraiindex].ai_name}} {{indextoai[inneraiindex].ai_version}}</td>
+   {% endfor %}
+{% for outeraiindex in range(numais) %}
+   <tr><td class='tablehead'>{{indextoai[outeraiindex].ai_name}} {{indextoai[outeraiindex].ai_version}}</td>
+   {% for inneraiindex in range(numais) %}
+      <td {% if aipairfinishedcount[outeraiindex][inneraiindex] >= nummatchesperaipair  %}class='success'{% endif %}>{{aipairfinishedcount[outeraiindex][inneraiindex]}} / {{nummatchesperaipair}}</td>
+   {% endfor %}
+   </tr>
+{% endfor %}
+</table>
+
+<h2>AI pair (scheduled + completed) match count</h2>
+
+<table cellpadding="3">
+<tr><td class='tablehead'>(matches finished + queued) / matches required for league</td>
+   {% for inneraiindex in range(numais) %}
+      <td class='tablehead'>{{indextoai[inneraiindex].ai_name}} {{indextoai[inneraiindex].ai_version}}</td>
+   {% endfor %}
+{% for outeraiindex in range(numais) %}
+   <tr><td class='tablehead'>{{indextoai[outeraiindex].ai_name}} {{indextoai[outeraiindex].ai_version}}</td>
+   {% for inneraiindex in range(numais) %}
+      <td {% if aipairfinishedcount[outeraiindex][inneraiindex] + aipairqueuedmatchcount[outeraiindex][inneraiindex] >= nummatchesperaipair  %}class='success'{% endif %}>{{aipairfinishedcount[outeraiindex][inneraiindex] + aipairqueuedmatchcount[outeraiindex][inneraiindex]}} / {{nummatchesperaipair}}</td>
+   {% endfor %}
+   </tr>
+{% endfor %}
+</table>
+
+{% endblock content %}
+

@@ -1,0 +1,19 @@
+{% extends 'menu.html' %}
+
+{% import 'formhelper.html' as formhelper %}
+
+{% block title %}
+Schedule matches
+{% endblock title %}
+{% block content %}
+
+Pick a league: <form method="get" action="schedulematchesform.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
+<input type="submit" value="Reload" />
+</form>
+
+{% if showform and mapok and modok %}
+<a href="schedulematches.py?leaguename={{league.league_name}}">Click here to schedule matches</a>
+{% else %}
+Cannot schedule matches for this league, missing maps or mods.
+{% endif %}
+{% endblock content %}

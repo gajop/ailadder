@@ -1,0 +1,98 @@
+body * {
+   font-family: Helvetica, Arial, Verdana;
+  }
+
+div.header {
+   position: absolute;
+   top: 20px;
+   left: 50px;
+}
+div.mainmenu {
+    position: absolute;
+    z-index: 1;
+    top: 50px;
+    left: 50px;
+}
+div.contents {
+   position: absolute;
+   top: 90px;
+   left: 50px;
+}
+
+div.footer {
+   padding: 50pt 0pt 50pt 0pt;
+}
+
+div.menu {
+   float: left;   
+   width: 175px;
+}
+
+div.menu div.popup {
+   display: none;
+   font-weight: normal;
+   border: solid 1px #bbb;
+   background-color: #FAFAFA;
+   margin-top:10px;
+   width: 200px;
+}
+
+
+div.menu:hover div.popup {
+   display: block;
+}
+
+div.popup a {
+   text-decoration: none;   
+   color: black;
+}
+div.popup a:hover {
+}
+div.menuitem {
+   padding: 10px;
+}
+div.menuitem:hover {
+   padding: 10px;
+   background-color: #EEEEEE;
+}
+
+table {
+   border: none !important;
+   border-spacing: 0px !important;
+}
+
+td {
+	border-collapse:collapse;
+	border: none;
+}
+
+tr.tablehead td {
+   background-color: aaf;
+   font-weight: bold;
+}
+
+td.tablehead {
+   background-color: #f0f0f0;
+   padding:5px 30px 5px 5px;
+}
+
+tr {
+   padding: 3px;
+   background-color: #fafafa;
+}
+
+tr.inprogress {
+   background-color: lightgreen;
+}
+
+tr.success {
+   background-color: lightgreen;
+}
+td.success {
+   background-color: lightgreen;
+}
+td.fail {
+   background-color: red;
+}
+
+
