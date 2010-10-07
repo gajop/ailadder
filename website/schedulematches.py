@@ -48,7 +48,7 @@ def go():
    league = leaguehelper.getLeague(leaguename)
 
    matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
-   matchids = [match.matchrequest_id for match in matches]
+   matchids = [match.match_id for match in matches]
    [success, matchrequestqueue] = gridclienthelper.getproxy().getmatchrequestqueuev1()
    [success, matchresults] = gridclienthelper.getproxy().getmatchresultsv1()
    matchrequestqueue = [i for i in matchrequestqueue if i['matchrequest_id'] in matchids]

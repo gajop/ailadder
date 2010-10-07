@@ -41,7 +41,13 @@ def addmatchrequest( ai0, ai1, mod_name, map_name, speed, softtimeout, hardtimeo
       print "error: " + message
       raise Exception(message)
    else:
-       return message #message represents matchrequest_id
+      return message #message represents matchrequest_id
 
-
+def addmatchrequests(matches):
+   [result, message] = gridclienthelper.getproxy().schedulematchesv1(matches)
+   if not result:
+      print "error: " + message
+      raise Exception(message)
+   else:
+      return message
 

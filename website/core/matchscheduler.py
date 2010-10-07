@@ -40,20 +40,41 @@ def schedulematchesforleague( league, matchrequestqueue, matchresults ):
    indextoai = getindextoai(league)
    aiqueuedpairmatchcount = getaipairmatchcount(matchrequestqueue, league, ais, indextoai )
    aifinishedpairmatchcount = getaipairmatchcount(matchresults, league, ais, indextoai )
+   aipairs = []
    for outeraiindex in xrange(len(ais)):
       for inneraiindex in xrange(len(ais)):
          totalrequestcount = aiqueuedpairmatchcount[outeraiindex][inneraiindex] + aifinishedpairmatchcount[outeraiindex][inneraiindex]
          if totalrequestcount < league.nummatchesperaipair:
             for i in xrange( league.nummatchesperaipair - totalrequestcount ):
-               scheduleleaguematch( league, indextoai[outeraiindex], indextoai[inneraiindex] )
+               aipairs.append([{"ai_name":indextoai[outeraiindex].ai_name, "ai_version":indextoai[outeraiindex].ai_version}, {"ai_name":indextoai[inneraiindex].ai_name, "ai_version":indextoai[inneraiindex].ai_version}])
+               #scheduleleaguematch( league, indextoai[outeraiindex], indextoai[inneraiindex] )
             aiqueuedpairmatchcount[outeraiindex][inneraiindex] = league.nummatchesperaipair - aifinishedpairmatchcount[outeraiindex][inneraiindex]
             aiqueuedpairmatchcount[inneraiindex][outeraiindex] = league.nummatchesperaipair - aifinishedpairmatchcount[outeraiindex][inneraiindex]
+   scheduleleaguematches(league, aipairs)
 
 def scheduleleaguematch( league, ai0, ai1 ):
    matchrequest_id = matchrequestcontroller_gridclient.addmatchrequest( ai0 = ai0, ai1 = ai1, map_name = league.map_name, mod_name = league.mod_name, speed = league.speed, softtimeout = league.softtimeout, hardtimeout = league.hardtimeout )
    leagueMatch = LeagueMatch(matchrequest_id, league.league_id)
    sqlalchemysetup.session.add(leagueMatch)
    sqlalchemysetup.session.commit()
+
+def scheduleleaguematches(league, aipairs):
+   matches = []
+   for aipair in aipairs:
+      match = {}
+      match["map_name"] = league.map_name
+      match["mod_name"] = league.mod_name
+      match["ais"] = aipair
+      match["softtimeout"] = league.softtimeout
+      match["hardtimeout"] = league.hardtimeout
+      match["speed"] = league.speed
+      match["options"] = []
+      matches.append(match)
+   matchrequest_ids = matchrequestcontroller_gridclient.addmatchrequests(matches)
+   leaguematches = [LeagueMatch(matchrequest_id, league.league_id) for matchrequest_id in matchrequest_ids]
+   sqlalchemysetup.session.add_all(leaguematches)
+   sqlalchemysetup.session.commit()
+      
 
 # returns [ dict from ai to zero-based aiindex, dict from index to ai ]
 # only returns ais that match the league, ie have at least the same options as league
