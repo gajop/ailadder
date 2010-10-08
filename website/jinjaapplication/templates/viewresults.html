@@ -1,12 +1,19 @@
 {% extends 'menu.html' %}
-
 {% import 'formhelper.html' as formhelper %}
-{% block title %}AI Ladder - Match results{% endblock title %}
+{% block title %}AI Ladder - Match results for league {{league.league_name}}{% endblock title %}
 {% block content %}
 
 Pick a league: <form method="get" action="viewresults.py">{{formhelper.listtodropdownwithselected('leaguename', leaguenames,league.league_name)}}
 <input type="submit" value="Reload" />
 </form>
+
+{% for i in range(1, numPages + 1) %}
+{% if i != page %}
+<a href="./viewresults.py?page={{i}}&leaguename={{league.league_name}}">{{i}}</a> 
+{% else %}
+{{i}} 
+{% endif %}
+{% endfor %}
 
 <table>
 <tr class='tablehead'>

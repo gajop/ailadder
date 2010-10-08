@@ -21,7 +21,10 @@
 # http://www.opensource.org/licenses/gpl-license.php
 #
 
+from __future__ import division
 import cgitb; cgitb.enable()
+import math
+import sys
 
 from utils import *
 from core import *
@@ -42,13 +45,21 @@ def go():
       leaguename = leaguenames[0]
 
    league = leaguehelper.getLeague(leaguename)
+   resultsPerPage = 100
+   page = formhelper.getValue('page')
+   if page == None:
+      page = 1
+   else:
+      page = int(page)
    matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
    matchids = [match.match_id for match in matches]
 
    [success, requests] = gridclienthelper.getproxy().getmatchesv1(matchids) #only ids that exist
    requests = filter(lambda x: x['matchresult'][0] == False, requests)
+   numPages = math.ceil(len(requests) / resultsPerPage)
+   requests = requests[(page - 1) * resultsPerPage:page * resultsPerPage]
 
-   jinjahelper.rendertemplate('viewrequests.html', requests = requests, leaguenames = leaguenames, league = league )
+   jinjahelper.rendertemplate('viewrequests.html', requests = requests, leaguenames = leaguenames, league = league, page = page, numPages = numPages )
 
 go()
 sqlalchemysetup.close()

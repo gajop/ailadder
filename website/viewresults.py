@@ -20,9 +20,12 @@
 # You can find the licence also on the web at:
 # http://www.opensource.org/licenses/gpl-license.php
 #
+from __future__ import division
 
 import cgitb; cgitb.enable()
 import os
+import math
+import sys
 
 from utils import *
 from core import *
@@ -43,8 +46,15 @@ def go():
    leaguename = formhelper.getValue('leaguename')
    if leaguename == None:
       leaguename = leaguenames[0]
-
    league = leaguehelper.getLeague(leaguename)
+
+   resultsPerPage = 100
+   page = formhelper.getValue('page')
+   if page == None:
+      page = 1
+   else:
+      page = int(page)
+
    matches = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id)
    matchids = [match.match_id for match in matches]
 
@@ -53,11 +63,13 @@ def go():
    for x in results:
       x['matchresult'] = x['matchresult'][1]
       x['botrunner_name'] = x['botrunner_name'][1]
+   numPages = math.ceil(len(results) / resultsPerPage)
+   results = results[(page - 1) * resultsPerPage:page * resultsPerPage]
    #[success,results] = gridclienthelper.getproxy().getmatchresultsv1()
    #results = [i for i in results if i['matchrequest_id'] in matchids]
 
    if success:
-      jinjahelper.rendertemplate( 'viewresults.html', results = results, leaguenames = leaguenames, league = league, springgridurl = confighelper.getValue('springgridwebsite' ) )
+      jinjahelper.rendertemplate( 'viewresults.html', results = results, leaguenames = leaguenames, league = league, springgridurl = confighelper.getValue('springgridwebsite' ), page = page, numPages = numPages )
    else:
       jinjahelper.message( results )
 
