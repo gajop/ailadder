@@ -25,7 +25,7 @@ import sqlalchemy
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
 
-from sqlalchemy import Column, String, Integer, ForeignKey, UniqueConstraint, and_, schema, Table
+from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, UniqueConstraint, and_, schema, Table
 from sqlalchemy.orm import backref, relation
 
 from utils import *
@@ -158,6 +158,18 @@ class LeagueMatch(Base):
         self.match_id = match_id
         self.league_id = league_id
 
+class LeagueAI(Base):
+   __tablename__ = "league_ais"
+   ai_id = Column(Integer, ForeignKey('ais.ai_id'), primary_key=True)
+   league_id = Column(Integer, ForeignKey('leagues.league_id'), nullable = False)
+
+   ai = relation("AI")
+   league = relation("League")
+
+   def __init__(self, ai, league):
+      self.ai = ai
+      self.league = league
+
 class League(Base):
    __tablename__ = 'leagues'
 
@@ -170,11 +182,15 @@ class League(Base):
    speed = Column(Integer, nullable = False)
    softtimeout = Column(Integer, nullable = False)
    hardtimeout = Column(Integer, nullable = False)
+   sides = Column(String(255), nullable = False) #ugly but allows for different modes easily
+   sidemodes = Column(String(255), nullable = False) 
+   playagainstself = Column(Boolean, nullable = False)
 
    creator = relation("Account")
    options = relation("AIOption", secondary = leagueoptions )
+   league_ais = relation("LeagueAI")
 
-   def __init__( self, league_name, creator, mod_name, map_name, nummatchesperaipair, speed, softtimeout, hardtimeout ):
+   def __init__( self, league_name, creator, mod_name, map_name, nummatchesperaipair, speed, softtimeout, hardtimeout, sides, sidemodes, playagainstself ):
       self.league_name = league_name
       self.creator = creator
       self.mod_name = mod_name
@@ -183,6 +199,9 @@ class League(Base):
       self.speed = speed
       self.softtimeout = softtimeout
       self.hardtimeout = hardtimeout
+      self.sides = sides
+      self.sidemodes = sidemodes
+      self.playagainstself = playagainstself
 
 # members who are leaguegruops
 leaguegroup_leaguemembers = Table( 'leaguegroup_leaguemembers', Base.metadata,

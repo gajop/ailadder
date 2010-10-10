@@ -41,12 +41,25 @@ def schedulematchesforleague( league, matchrequestqueue, matchresults ):
    aiqueuedpairmatchcount = getaipairmatchcount(matchrequestqueue, league, ais, indextoai )
    aifinishedpairmatchcount = getaipairmatchcount(matchresults, league, ais, indextoai )
    aipairs = []
+   playagainstself = league.playagainstself
+   sides = [int(i) for i in league.sides.split("vs")]
    for outeraiindex in xrange(len(ais)):
       for inneraiindex in xrange(len(ais)):
+         if not playagainstself and outeraiindex == inneraiindex:
+            continue
          totalrequestcount = aiqueuedpairmatchcount[outeraiindex][inneraiindex] + aifinishedpairmatchcount[outeraiindex][inneraiindex]
-         if totalrequestcount < league.nummatchesperaipair:
-            for i in xrange( league.nummatchesperaipair - totalrequestcount ):
-               aipairs.append([{"ai_name":indextoai[outeraiindex].ai_name, "ai_version":indextoai[outeraiindex].ai_version}, {"ai_name":indextoai[inneraiindex].ai_name, "ai_version":indextoai[inneraiindex].ai_version}])
+         if totalrequestcount < league.nummatchesperaipair * len(sides):
+            if len(sides) == 2:
+               first = sides[0]
+               second = sides[1]
+               for i in xrange( league.nummatchesperaipair - totalrequestcount ):
+                  aipairs.append([{"ai_name":indextoai[outeraiindex].ai_name, "ai_version":indextoai[outeraiindex].ai_version, "ai_side":first}, {"ai_name":indextoai[inneraiindex].ai_name, "ai_version":indextoai[inneraiindex].ai_version, "ai_side":second}])
+               for i in xrange( league.nummatchesperaipair - totalrequestcount ):
+                  aipairs.append([{"ai_name":indextoai[outeraiindex].ai_name, "ai_version":indextoai[outeraiindex].ai_version, "ai_side":second}, {"ai_name":indextoai[inneraiindex].ai_name, "ai_version":indextoai[inneraiindex].ai_version, "ai_side":first}])
+            else:
+               side = sides[0]
+               for i in xrange( league.nummatchesperaipair - totalrequestcount ):
+                  aipairs.append([{"ai_name":indextoai[outeraiindex].ai_name, "ai_version":indextoai[outeraiindex].ai_version, "ai_side":side}, {"ai_name":indextoai[inneraiindex].ai_name, "ai_version":indextoai[inneraiindex].ai_version, "ai_side":side}])
                #scheduleleaguematch( league, indextoai[outeraiindex], indextoai[inneraiindex] )
             aiqueuedpairmatchcount[outeraiindex][inneraiindex] = league.nummatchesperaipair - aifinishedpairmatchcount[outeraiindex][inneraiindex]
             aiqueuedpairmatchcount[inneraiindex][outeraiindex] = league.nummatchesperaipair - aifinishedpairmatchcount[outeraiindex][inneraiindex]

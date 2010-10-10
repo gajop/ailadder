@@ -3,7 +3,7 @@
 {% import 'formhelper.html' as formhelper %}
 
 {% block title %}
-Schedule matches
+Schedule matches for league {{league.league_name}}
 {% endblock title %}
 {% block content %}
 
@@ -16,4 +16,7 @@ Pick a league: <form method="get" action="schedulematchesform.py">{{formhelper.l
 {% else %}
 Cannot schedule matches for this league, missing maps or mods.
 {% endif %}
+<table>
+    <tr><td>Already queued: </td><td {% if numberscheduled == 0 %} class="nonequeued" {% elif numberscheduled == totalmatches %} class="allqueued" {% else %} class="somequeued" {% endif %}>{{numberscheduled}}/{{totalmatches}}</td></tr>
+</table>
 {% endblock content %}

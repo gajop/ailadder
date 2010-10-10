@@ -43,15 +43,20 @@ def go():
       softtimeout = formhelper.getValue('softtimeout')
       hardtimeout = formhelper.getValue('hardtimeout')
       nummatchesperaipair = formhelper.getValue('nummatchesperairpair')
+      sides = formhelper.getValue('sides')
+      sidemodes = formhelper.getValue('sidemodes')
+      playagainstself = bool(formhelper.getValue('playagainstself'))
 
-      if leaguename != None and modname != None and mapname != None and speed != None and softtimeout != None and hardtimeout != None and \
-              leaguename != '' and modname != '' and mapname != '':
+
+      if leaguename != None and modname != None and mapname != None and speed != None and \
+              softtimeout != None and hardtimeout != None and sides != None and sidemodes != None and \
+              leaguename != '' and modname != '' and mapname != '' and sides != '' and sidemodes != '':
          speed = int(speed) 
          softtimeout = int(softtimeout)
          hardtimeout = int(hardtimeout)
          nummatchesperaipair = int(nummatchesperaipair)
          account = accounthelper.getAccount( loginhelper.gusername )
-         league = League( leaguename, account, modname, mapname, nummatchesperaipair, speed, softtimeout, hardtimeout )
+         league = League( leaguename, account, modname, mapname, nummatchesperaipair, speed, softtimeout, hardtimeout, sides, sidemodes, playagainstself )
          sqlalchemysetup.session.add( league )
          sqlalchemysetup.session.commit()
          jinjahelper.message("Added ok. You might want to schedule matches <a href=./schedulematchesform.py?leaguename=" + leaguename + ">here</a>")

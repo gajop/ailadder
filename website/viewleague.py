@@ -47,7 +47,7 @@ potentialoptions = listhelper.tuplelisttolist(
 for assignedoption in compatibleoptions:
    potentialoptions.remove(assignedoption)
 
-jinjahelper.rendertemplate('viewleague.html', leaguename = leaguename, compatibleoptions = compatibleoptions, showform = showform, potentialoptions = potentialoptions )
+jinjahelper.rendertemplate('viewleague.html', leaguename = leaguename, compatibleoptions = compatibleoptions, showform = showform, potentialoptions = potentialoptions)
 
 sqlalchemysetup.close()
 

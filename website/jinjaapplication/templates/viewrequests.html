@@ -20,7 +20,9 @@ Pick a league: <form method="get" action="viewrequests.py">{{formhelper.listtodr
 <tr class='tablehead'>
 <td>ID</td>
 <td>AI0</td>
+<td>AI0 Side</td>
 <td>AI1</td>
+<td>AI1 Side</td>
 <td>Map</td>
 <td>Mod</td>
 <td>Options</td>
@@ -30,7 +32,9 @@ Pick a league: <form method="get" action="viewrequests.py">{{formhelper.listtodr
    <tr>
    <td>{{request.matchrequest_id}}</td>
    <td>{{request['ais'][0].ai_name|e}} {{request['ais'][0].ai_version|e}}</td>
+   <td>{{request['ai0_side'].mod_side_name|e}} 
    <td>{{request['ais'][1].ai_name|e}} {{request['ais'][1].ai_version|e}}</td>
+   <td>{{request['ai1_side'].mod_side_name|e}} 
    <td>{{request.map_name|e}}</td>
    <td>{{request.mod_name|e}}</td>
    <td>

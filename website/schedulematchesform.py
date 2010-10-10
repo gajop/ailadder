@@ -56,7 +56,18 @@ def go():
 
    showform = loginhelper.isLoggedOn()
 
-   jinjahelper.rendertemplate( 'schedulematches.html', leaguenames = leaguenames, league = league, nummatchesperaipair = league.nummatchesperaipair, mapok = mapok, modok = modok, showform = showform )
+   numberscheduled = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id).count()
+   nummatchesperaipair = league.nummatchesperaipair 
+   numais = sqlalchemysetup.session.query(AI).count() 
+   totalmatches = numais * (numais - 1) / 2
+   if league.playagainstself:
+      totalmatches += numais 
+   totalmatches *= nummatchesperaipair
+   if league.sidemodes == "xvsy":
+      totalmatches *= 2
+
+
+   jinjahelper.rendertemplate( 'schedulematches.html', leaguenames = leaguenames, league = league,  mapok = mapok, modok = modok, showform = showform, totalmatches = totalmatches, numberscheduled = numberscheduled )
 
 go()
 

@@ -19,7 +19,9 @@ Pick a league: <form method="get" action="viewresults.py">{{formhelper.listtodro
 <tr class='tablehead'>
 <td>ID</td>
 <td>AI0</td>
+<td>AI0 Side</td>
 <td>AI1</td>
+<td>AI1 Side</td>
 <td>Map</td>
 <td>Mod</td>
 <td>Options</td>
@@ -31,9 +33,11 @@ Pick a league: <form method="get" action="viewresults.py">{{formhelper.listtodro
 
 {% for result in results %}
    <tr {% if loop.even %}class="alt"{% endif %}>
-   <td>{{result.matchrequest_id}}</td>
+   <td>{{result.matchresult_id}}</td>
    <td {% if result.matchresult == 'ai0won' %}class='success'{% endif %}>{{result.ais[0].ai_name|e}} {{result.ais[0].ai_version|e}}</td>
+   <td {% if result.matchresult == 'ai0won' %}class='success'{% endif %}>{{result['ai0_side'].mod_side_name|e}} 
    <td {% if result.matchresult == 'ai1won' %}class='success'{% endif %}>{{result.ais[1].ai_name|e}} {{result.ais[1].ai_version|e}}</td>
+   <td {% if result.matchresult == 'ai1won' %}class='success'{% endif %}>{{result['ai1_side'].mod_side_name|e}} 
    <td>{{result.map_name|e}}</td>
    <td>{{result.mod_name|e}}</td>
    <td>

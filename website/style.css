@@ -95,4 +95,14 @@ td.fail {
    background-color: red;
 }
 
+td.allqueued {
+   background-color: lightgreen;
+}
 
+td.nonequeued {
+   background-color: blue;
+}
+
+td.somequeued {
+   background-color: yellow;
+}
