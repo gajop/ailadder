@@ -116,9 +116,11 @@ class AI(Base):
 
    owneraccount = relation("Account")
 
-   def __init__( self, ai_name, ai_version ):
+   def __init__( self, ai_name, ai_version, ai_id ):
       self.ai_name = ai_name
       self.ai_version = ai_version
+      self.ai_id = ai_id
+
 
 class Cookie(Base):
    __tablename__ = 'cookies'
@@ -158,18 +160,6 @@ class LeagueMatch(Base):
         self.match_id = match_id
         self.league_id = league_id
 
-class LeagueAI(Base):
-   __tablename__ = "league_ais"
-   ai_id = Column(Integer, ForeignKey('ais.ai_id'), primary_key=True)
-   league_id = Column(Integer, ForeignKey('leagues.league_id'), nullable = False)
-
-   ai = relation("AI")
-   league = relation("League")
-
-   def __init__(self, ai, league):
-      self.ai = ai
-      self.league = league
-
 class League(Base):
    __tablename__ = 'leagues'
 
@@ -202,6 +192,19 @@ class League(Base):
       self.sides = sides
       self.sidemodes = sidemodes
       self.playagainstself = playagainstself
+
+class LeagueAI(Base):
+   __tablename__ = "league_ais"
+   league_ai_id = Column(Integer, primary_key=True)
+   ai_id = Column(Integer, nullable = False) #sadly not a foreign key since AIs aren't added at the right time yet... 
+   league_id = Column(Integer, ForeignKey('leagues.league_id'), nullable = False)
+
+   league = relation("League", primaryjoin = league_id == League.league_id)
+
+   def __init__(self, ai_id, league):
+      self.ai_id = ai_id
+      self.league = league
+
 
 # members who are leaguegruops
 leaguegroup_leaguemembers = Table( 'leaguegroup_leaguemembers', Base.metadata,
@@ -310,6 +313,4 @@ def createall(engine):
 
 def dropall(engine):
    Base.metadata.drop_all(engine)
-
-
 

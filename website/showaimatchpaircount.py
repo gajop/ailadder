@@ -50,7 +50,7 @@ def go():
    gridais = gridclienthelper.getproxy().getais()
 
    for gridai in gridais:
-      aihelper.addaiifdoesntexist( gridai['ai_name'], gridai['ai_version'] )
+      aihelper.addaiifdoesntexist( gridai['ai_name'], gridai['ai_version'], gridai['ai_id'] )
    sqlalchemysetup.session.flush()
 
    ais = leaguehelper.getleagueais( league )

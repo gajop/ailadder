@@ -19,6 +19,7 @@
 # http://www.opensource.org/licenses/gpl-license.php
 #
 
+import sys
 from utils import *
 from tableclasses import *
 import sqlalchemysetup
@@ -47,15 +48,12 @@ def getAI( ainame, aiversion ):
 def getAIOption( optionname ):
    return sqlalchemysetup.session.query(AIOption).filter(AIOption.option_name == optionname ).first()
 
-def addaiifdoesntexist(ainame, aiversion):
+def addaiifdoesntexist(ainame, aiversion, ai_id):
    ai = getAI( ainame, aiversion )
    if ai == None:
-      try:
-         ai = AI(ainame, aiversion )
-         sqlalchemysetup.session.add( ai )
-         sqlalchemysetup.session.commit()
-      except:
-         return(False,"error adding to db: " + str( sys.exc_value ) )
+      ai = AI(ainame, aiversion, ai_id )
+      sqlalchemysetup.session.add( ai )
+      sqlalchemysetup.session.commit()
 
    return (True,'')
 

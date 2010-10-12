@@ -99,6 +99,27 @@ http://www.opensource.org/licenses/gpl-license.php
             }
         }
     }
+    function swapAI(first, second) {
+        while (first.selectedIndex != -1) {
+            var option = first.options[first.selectedIndex];
+            first.remove(first.selectedIndex);
+            try {
+                second.add(option, null);
+            } catch (ex) {
+                second.add(option);
+            }
+        }
+    }
+    function addAI() {
+        var unselectedAI = document.getElementById("unselectedais");
+        var selectedAI = document.getElementById("selectedais");
+        swapAI(unselectedAI, selectedAI);
+    }
+    function removeAI() {
+        var selectedAI = document.getElementById("selectedais");
+        var unselectedAI = document.getElementById("unselectedais");
+        swapAI(selectedAI, unselectedAI);
+    }
 </script>
 
 <p>A league is a specific game configuration used for testing AIs against each other</p>
@@ -161,6 +182,28 @@ http://www.opensource.org/licenses/gpl-license.php
    </td></tr>
    <tr><td>League sides</td><td>
            <select id="sides" name="sides" />
+   </td></tr>
+   <tr><td>AIs</td><td>
+   <table>
+       <tr><td>
+       Unused: 
+       </td><td>
+       Used:
+       </td></tr><tr><td>
+       <tr><td>
+       <input type="button" value="&gt;&gt;&gt;" onclick="addAI();"/>
+       </td><td>
+       <input type="button" value="&lt;&lt;&lt;" onclick="removeAI();"/>
+       </td></tr><tr><td>
+       <select id="unselectedais" name="unselectedais" multiple="multiple" size="8">
+           {% for k, v in ais.iteritems() %}
+           <option value={{k}}>{{v}}</option>
+           {% endfor %}
+       </select>
+   </td><td>
+       <select id="selectedais" name="selectedais" multiple="multiple" size="8"></select>
+   </td></tr>
+   </table>
    </td></tr>
 
 

@@ -38,6 +38,7 @@ showform = loginhelper.gusername != ''
 maps = gridclienthelper.getproxy().getmaps()
 mods = gridclienthelper.getproxy().getmods()
 sides = gridclienthelper.getproxy().getmodsides()
+ais = gridclienthelper.getproxy().getais()
 modsides = {}
 for i, mod in enumerate(mods):
    modsides[mod] = (i, [])
@@ -47,10 +48,13 @@ sides = modsides
 speeds = [i for i in range(1, 10)]
 speeds.extend([i for i in range(10,101,5)])
 timeouts = speeds 
+tmpais = {}
+for ai in ais:
+   tmpais[ai["ai_id"]] = ai["ai_name"] + " " + ai["ai_version"]
 
 sidemodes = { "allsame" : "All same", "xvsy" : "X vs Y" }
 
-jinjahelper.rendertemplate('viewleagues.html', leagues = leagues, showform = showform, maps = maps, mods = mods, speeds = speeds, timeouts = timeouts, sidemodes = sidemodes, sides = sides)
+jinjahelper.rendertemplate('viewleagues.html', leagues = leagues, showform = showform, maps = maps, mods = mods, speeds = speeds, timeouts = timeouts, sidemodes = sidemodes, sides = sides, ais = tmpais)
 
 sqlalchemysetup.close()
 

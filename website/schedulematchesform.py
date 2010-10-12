@@ -48,7 +48,7 @@ def go():
    gridais = gridclienthelper.getproxy().getais()
 
    for gridai in gridais:
-      aihelper.addaiifdoesntexist( gridai['ai_name'], gridai['ai_version'] )
+      aihelper.addaiifdoesntexist( gridai['ai_name'], gridai['ai_version'], gridai['ai_id'] )
    sqlalchemysetup.session.flush()
 
    [success, mapok ] = gridclienthelper.getproxy().mapexists( league.map_name )
@@ -58,7 +58,7 @@ def go():
 
    numberscheduled = sqlalchemysetup.session.query(LeagueMatch).filter(LeagueMatch.league_id == league.league_id).count()
    nummatchesperaipair = league.nummatchesperaipair 
-   numais = sqlalchemysetup.session.query(AI).count() 
+   numais = len(leaguehelper.getleagueais(league))
    totalmatches = numais * (numais - 1) / 2
    if league.playagainstself:
       totalmatches += numais 

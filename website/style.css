@@ -100,7 +100,7 @@ td.allqueued {
 }
 
 td.nonequeued {
-   background-color: blue;
+   background-color: lightblue;
 }
 
 td.somequeued {

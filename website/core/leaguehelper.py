@@ -32,7 +32,8 @@ def getLeagueGroup( leaguegroup_name ):
 
 # return only ais that comply with league conditions
 def getleagueais( league ):
-   ais = sqlalchemysetup.session.query(AI).all()
+   sqlsession = sqlalchemysetup.session
+   ais = sqlsession.query(AI).filter(AI.ai_id.in_(sqlsession.query(LeagueAI.ai_id).filter(LeagueAI.league_id == league.league_id))).all()
    ailist = []
 
    for ai in ais:

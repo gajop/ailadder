@@ -23,6 +23,7 @@
 
 import cgitb; cgitb.enable()
 import cgi
+import sys
 
 from utils import *
 from core import *
@@ -46,28 +47,26 @@ def go():
       sides = formhelper.getValue('sides')
       sidemodes = formhelper.getValue('sidemodes')
       playagainstself = bool(formhelper.getValue('playagainstself'))
-
+      ais = [ai.value for ai in formhelper.getform()['selectedais']]
 
       if leaguename != None and modname != None and mapname != None and speed != None and \
               softtimeout != None and hardtimeout != None and sides != None and sidemodes != None and \
-              leaguename != '' and modname != '' and mapname != '' and sides != '' and sidemodes != '':
+              leaguename != '' and modname != '' and mapname != '' and sides != '' and sidemodes != '' and len(ais) > 0:
          speed = int(speed) 
          softtimeout = int(softtimeout)
          hardtimeout = int(hardtimeout)
          nummatchesperaipair = int(nummatchesperaipair)
          account = accounthelper.getAccount( loginhelper.gusername )
          league = League( leaguename, account, modname, mapname, nummatchesperaipair, speed, softtimeout, hardtimeout, sides, sidemodes, playagainstself )
+         leagueais = [LeagueAI(ai, league) for ai in ais]
          sqlalchemysetup.session.add( league )
+         sqlalchemysetup.session.add_all(leagueais)
          sqlalchemysetup.session.commit()
          jinjahelper.message("Added ok. You might want to schedule matches <a href=./schedulematchesform.py?leaguename=" + leaguename + ">here</a>")
       else:
          jinjahelper.message( "Please fill in the fields and try again" )
 
-try:
-   go()
-except:
-   import sys
-   jinjahelper.message("Something went wrong. " + str(sys.exc_value))
+go()
 
 sqlalchemysetup.close()
 
