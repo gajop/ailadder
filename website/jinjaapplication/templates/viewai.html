@@ -1,7 +1,7 @@
 {% extends 'menu.html' %}
 
 {% import 'formhelper.html' as formhelper %}
-{% block title %}AILadder - View AI {{ai.ai_name}} {{ai.ai_version}}{% endblock title %}
+{% block title %}AILadder - View AI {{ai.ai_name|e}} {{ai.ai_version|e}}{% endblock title %}
 {% block content %}
 
 <p>This page can configure the options compatible with one ai</p>

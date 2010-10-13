@@ -47,11 +47,14 @@ def go():
       sides = formhelper.getValue('sides')
       sidemodes = formhelper.getValue('sidemodes')
       playagainstself = bool(formhelper.getValue('playagainstself'))
-      ais = [ai.value for ai in formhelper.getform()['selectedais']]
+      ais = None
+      if formhelper.getform().has_key('selectedais'):
+         ais = formhelper.getform()['selectedais']
 
       if leaguename != None and modname != None and mapname != None and speed != None and \
-              softtimeout != None and hardtimeout != None and sides != None and sidemodes != None and \
+              softtimeout != None and hardtimeout != None and sides != None and sidemodes != None and ais != None and \
               leaguename != '' and modname != '' and mapname != '' and sides != '' and sidemodes != '' and len(ais) > 0:
+         ais = [ai.value for ai in ais]
          speed = int(speed) 
          softtimeout = int(softtimeout)
          hardtimeout = int(hardtimeout)
@@ -62,7 +65,7 @@ def go():
          sqlalchemysetup.session.add( league )
          sqlalchemysetup.session.add_all(leagueais)
          sqlalchemysetup.session.commit()
-         jinjahelper.message("Added ok. You might want to schedule matches <a href=./schedulematchesform.py?leaguename=" + leaguename + ">here</a>")
+         jinjahelper.rendertemplate("addleague.html", league = league) 
       else:
          jinjahelper.message( "Please fill in the fields and try again" )
 

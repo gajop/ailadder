@@ -1,0 +1,9 @@
+{% extends 'menu.html' %}
+
+{% block title %}
+League {{league.league_name|e}} scheduled
+{% endblock title %}
+{% block content %}
+
+Added ok. You might want to schedule matches <a href="./schedulematchesform.py?leaguename={{league.league_name|e}}">here</a>
+{% endblock content %}

@@ -120,6 +120,13 @@ http://www.opensource.org/licenses/gpl-license.php
         var unselectedAI = document.getElementById("unselectedais");
         swapAI(selectedAI, unselectedAI);
     }
+    function checkForm() {
+        var selectedAI = document.getElementById("selectedais");
+        for (option in selectedAI.options) {
+            selectedAI.options[option].selected = true;
+        }
+        return true; //lazy
+    }
 </script>
 
 <p>A league is a specific game configuration used for testing AIs against each other</p>
@@ -157,13 +164,13 @@ http://www.opensource.org/licenses/gpl-license.php
    <p />
 
    <h2>Create new league:</h2>
-   <form action='addleague.py' method='post'>
+   <form action='addleague.py' method='post' onsubmit="return checkForm();">
    <table padding='3'>
    <tr><td>League name</td><td><input name='leaguename'</td></tr>
    <tr><td>Mod name</td><td>
         <select name="modname" id="modname" onchange="onSideModeChange();">
         {% for mod in mods %}
-        <option value="{{mod}}">{{mod}}</option>
+        <option value="{{mod|e}}">{{mod|e}}</option>
         {% endfor %}</td></tr>
    <tr><td>Map name</td><td>{{formhelper.listtodropdown( 'mapname', maps )}}</td></tr>
    <tr><td>Matches per AI and side selection</td><td>{{formhelper.listtodropdown( 'nummatchesperairpair', range(1,21) )}}</td></tr>
@@ -174,7 +181,7 @@ http://www.opensource.org/licenses/gpl-license.php
    <tr><td>League side selection type</td><td>
            <select id="sidemodes" name="sidemodes" onchange="onSideModeChange();">
                {% for k, v in sidemodes.iteritems() %}
-               <option value="{{k}}">{{v}}</option>
+               <option value="{{k|e}}">{{v|e}}</option>
                {% endfor %}</td></tr>
    <tr><td>Side selection type description</td><td>
    <textarea rows="5" cols="60" id="description" readonly="true"> 
@@ -197,7 +204,7 @@ http://www.opensource.org/licenses/gpl-license.php
        </td></tr><tr><td>
        <select id="unselectedais" name="unselectedais" multiple="multiple" size="8">
            {% for k, v in ais.iteritems() %}
-           <option value={{k}}>{{v}}</option>
+           <option value="{{k|e}}">{{v|e}}</option>
            {% endfor %}
        </select>
    </td><td>

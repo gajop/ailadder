@@ -3,7 +3,7 @@
 {% import 'formhelper.html' as formhelper %}
 
 {% block title %}
-Schedule matches for league {{league.league_name}}
+Schedule matches for league {{league.league_name|e}}
 {% endblock title %}
 {% block content %}
 
@@ -12,7 +12,7 @@ Pick a league: <form method="get" action="schedulematchesform.py">{{formhelper.l
 </form>
 
 {% if showform and mapok and modok %}
-<a href="schedulematches.py?leaguename={{league.league_name}}">Click here to schedule matches</a>
+<a href="schedulematches.py?leaguename={{league.league_name|e}}">Click here to schedule matches</a>
 {% else %}
 Cannot schedule matches for this league, missing maps or mods.
 {% endif %}

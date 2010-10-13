@@ -32,7 +32,7 @@ http://www.opensource.org/licenses/gpl-license.php
 {% for role in account.roles %}
    <tr>
    <td>{{role.role_name|e}}</td>
-   <td><a href='removerolefromaccount.py?username={{account.username}}&rolename={{role.role_name}}'>Remove from role</a></td>
+   <td><a href='removerolefromaccount.py?username={{account.username|e}}&rolename={{role.role_name|e}}'>Remove from role</a></td>
    </tr>
 {% endfor %}
 </table>
@@ -51,7 +51,7 @@ http://www.opensource.org/licenses/gpl-license.php
 
    <tr><td></td><td><input type='submit' value='Add' /></td></tr>
    </table>
-   <input type='hidden' name='username' value='{{account.username}}' />
+   <input type='hidden' name='username' value='{{account.username|e}}' />
    </form>
 {% endif %}
 

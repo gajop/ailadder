@@ -10,14 +10,14 @@ Pick a league: <form method="get" action="viewleagueresults.py">{{formhelper.lis
 <input type="submit" value="Reload" />
 </form>
 
-<h2>Attributes of league '{{league.league_name}}'</h2>
+<h2>Attributes of league '{{league.league_name|e}}'</h2>
 
 <table cellpadding="3">
-<tr><td class='tablehead'>Map</td><td {% if not mapok %}class="fail"{% endif %}>{{league.map_name}}</td></tr>
-<tr><td class='tablehead'>Mod</td><td {% if not modok %}class="fail"{% endif %}>{{league.mod_name}}</td></tr>
+<tr><td class='tablehead'>Map</td><td {% if not mapok %}class="fail"{% endif %}>{{league.map_name|e}}</td></tr>
+<tr><td class='tablehead'>Mod</td><td {% if not modok %}class="fail"{% endif %}>{{league.mod_name|e}}</td></tr>
 <tr><td class='tablehead'>Options</td><td>
 {% for option in league.options %}
-{{option}} 
+{{option|e}} 
 {% endfor %}
 &nbsp;</td></tr>
 </table>
@@ -37,7 +37,7 @@ Pick a league: <form method="get" action="viewleagueresults.py">{{formhelper.lis
 </tr>
     {% for aistat in aistats %}
     <tr>
-        <td class='tablehead'>{{aistat.name}} {{aistat.version}}</td>
+        <td class='tablehead'>{{aistat.name|e}} {{aistat.version|e}}</td>
         <td>{{aistat.wins}}</td>
         <td>{{aistat.losses}}</td>
         <td>{{aistat.draws}}</td>
